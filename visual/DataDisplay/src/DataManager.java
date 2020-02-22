@@ -12,6 +12,7 @@ public class DataManager {
 	private String fileName;
 	private String delimiter;
 	private ArrayList<String> names;
+	private ArrayList<String> subNames;
 	private ArrayList<float[]> data;
 	
 	public DataManager(String fileName) {
@@ -19,6 +20,7 @@ public class DataManager {
 		delimiter = "[\\n, ]";
 		names = new ArrayList<>();
 		data = new ArrayList<>();
+		subNames = new ArrayList<>();
 		initalizeData();
 	}
 	
@@ -82,15 +84,16 @@ public class DataManager {
 		return res;
 	}
 	
-	private ArrayList<Integer> getDependentIndexes(ArrayList<String> subNames) {
+	private ArrayList<Integer> getDependentIndexes(ArrayList<String> sentNames) {
 		ArrayList<Integer> depIndexes = new ArrayList<>();
-		for (int i = 0; i < subNames.size(); i++) {
-			int tempIndex = subNames.indexOf(names.get(i));
+		for (int i = 0; i < sentNames.size(); i++) {
+			int tempIndex = names.indexOf(sentNames.get(i));
 			if (tempIndex != -1) {
 				depIndexes.add(tempIndex);
+				subNames.add(sentNames.get(i));
 			} else {
-				System.out.println(names.get(i) + " did not have any data associated with the name.");
-				names.remove(i);
+				System.out.println(sentNames.get(i) + " did not have any data associated with the name.");
+				sentNames.remove(i);
 				i--;
 			}
 		}
@@ -106,6 +109,14 @@ public class DataManager {
 		ArrayList<Float> res = new ArrayList<>(data.size());
 		for (int i = 0; i < data.size(); i++) {
 			res.add(data.get(i)[index]);
+		}
+		return res;
+	}
+	
+	public String[] getDisplayedNames() {
+		String[] res = new String[subNames.size()];
+		for (int i = 0; i < res.length; i++) {
+			res[i] = subNames.get(i);
 		}
 		return res;
 	}

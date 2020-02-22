@@ -6,12 +6,17 @@ public class SimGraphics {
 
 	private PApplet p;
 	private DataManager daddyData;
-	private Graph currGraph;
+	private ArrayList<Graph> currGraph;
+	private int currentIndex;
 	
 	public SimGraphics(PApplet p, String textFile, String x, String[] yArgs) {
 		this.p = p;
+		currentIndex = 0;
 		daddyData = new DataManager(textFile);
-		currGraph = new Graph(p, daddyData.getData(x, getArgsList(yArgs)));
+		currGraph = new ArrayList<Graph>();
+		currGraph.add(new Graph(p, daddyData.getData(x, getArgsList(yArgs))));
+		currGraph.get(currentIndex).setXName(x);
+		currGraph.get(currentIndex).setYNames(daddyData.getDisplayedNames());
 	}
 	
 	private ArrayList<String> getArgsList(String[] yArgs) {
@@ -22,11 +27,18 @@ public class SimGraphics {
 		return res;
 	}
 	
+	public void setIndex(int index) {
+		currentIndex = index;
+		if (currentIndex >= currGraph.size()) {
+			currGraph.add(new Graph(p));
+		}
+	}
+	
 	public void updateGraph() {
-		currGraph.update();
+		currGraph.get(currentIndex).update();
 	}
 	
 	public void display() {
-		currGraph.display();
+		currGraph.get(currentIndex).display();
 	}
 }

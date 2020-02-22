@@ -2,22 +2,34 @@ import processing.core.PApplet;
 
 public class ProcessingSketch extends PApplet {
 	
-	public SimGraphics test;
+	public SimGraphics simGraph;
+	private String[] args;
 
+	public ProcessingSketch(String[] args) {
+		this.args = args;
+	}
 	
 	public void settings() {
 		size(LConstants.SCREEN_WIDTH, LConstants.SCREEN_HEIGHT);
 	}
 	
 	public void setup() {
-		String[] dep = {"x", "a_long", "cell_heat_w", "pos_x", "v"};
-		test = new SimGraphics(this, "results.csv", "t", dep);
-		test.updateGraph();
+		simGraph = new SimGraphics(this, "results.csv", "t", args);
+		simGraph.updateGraph();
 	}
 	
 	public void draw() {
 		this.background(240);
-		test.display();
+		simGraph.display();
+	}
+	
+	public void setGraph(int index) {
+		simGraph.setIndex(index);
+		simGraph.updateGraph();
+	}
+	
+	public boolean graphInitialized() {
+		return simGraph != null;
 	}
 	
 	public void run() {
