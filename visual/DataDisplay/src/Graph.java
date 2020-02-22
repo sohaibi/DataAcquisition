@@ -1,18 +1,22 @@
 import java.util.ArrayList;
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PFont;
 import processing.core.PImage;
 
 public class Graph {
 		
 		private int highlight;
+		private int selectIndex;
+		private boolean prevSpace;
 		private ArrayList<ArrayList<DataPoint>> dataList;
 		private DataPoint extrema;
-		private double deltaX;
+		private float deltaX;
 		private PImage imgGraph;
-		private String xName;
-		private String yName;
 		private PApplet p;
+		private String xName;
+		private String[] yNames;
+		private PFont textFont;
 		
 		public Graph(PApplet p) {
 			this.p = p;
@@ -21,11 +25,23 @@ public class Graph {
 		public Graph(PApplet p, ArrayList<ArrayList<DataPoint>> data) {
 			this.p = p;
 			dataList = data;
+			textFont = p.createFont("Calibri", 20); 
+		}
+		
+		public void setXName(String xName) {
+			this.xName = xName;
+		}
+		
+		public void setYNames(String[] yNames) {
+			this.yNames = new String[yNames.length];
+			for (int i = 0; i < yNames.length; i++) {
+				this.yNames[i] = yNames[i];
+			}
 		}
 		
 		public void update() {
 			displayBackground();
-			deltaX = (double) LConstants.GRAPH_DATA_WIDTH / dataList.get(0).size();
+			deltaX = (float) LConstants.GRAPH_DATA_WIDTH / dataList.get(0).size();
 			extrema = findExtrema();
 			displayVar();
 			createGraphImage();
@@ -64,13 +80,17 @@ public class Graph {
 			p.strokeWeight(2);
 		}
 		
-		public float getDisplayY(double yVal) {
+		public float getDisplayY(float yVal) {
 			return PApplet.map((float) yVal, (float) extrema.getX(), (float) extrema.getY(), 
 					LConstants.GRAPH_FINAL_DATA_Y, LConstants.GRAPH_INITIAL_DATA_Y);
 		}
 		
-		public float getDisplayX(int xVal) {
+		public float getDisplayX(float xVal) {
 			return (float) (LConstants.GRAPH_INITIAL_DATA_X + xVal * deltaX);
+		}
+		
+		public int getGraphX(float mouseX) {
+			return (int) ((p.mouseX - LConstants.GRAPH_BUFFER_X) / deltaX);
 		}
 		
 		private void createGraphImage() {
@@ -86,11 +106,11 @@ public class Graph {
 		}
 		
 		public DataPoint findExtrema() {
-			double min = Double.MAX_VALUE;
-			double max = Double.MIN_VALUE;
+			float min = Float.MAX_VALUE;
+			float max = Float.MIN_VALUE;
 			for (ArrayList<DataPoint> dataVar : dataList) {
 				for (DataPoint pt : dataVar) {
-					double comp = pt.getY();
+					float comp = pt.getY();
 					if (comp < min) {
 						min = comp;
 					}
@@ -109,14 +129,62 @@ public class Graph {
 		
 		private void displayMouse() {
 			if (p.mouseX >= LConstants.GRAPH_INITIAL_DATA_X && p.mouseX < LConstants.GRAPH_FINAL_DATA_X) {
+				displayHighlightInfo();
 				p.stroke(LConstants.GRAPH_MOUSE_LINE_COLOR);
 				p.line(p.mouseX, LConstants.GRAPH_INITIAL_DATA_Y, p.mouseX, LConstants.GRAPH_FINAL_DATA_Y);
-				int pointX = (int) ((p.mouseX - LConstants.GRAPH_BUFFER_X) / deltaX);
 				for (int i = 0; i < dataList.size(); i++) {
-					float yPos = getDisplayY(dataList.get(i).get(pointX).getY());
+					float yPos = getYFromMouse(i);
 					p.fill(LConstants.GRAPH_DATA_LINE_COLOR[i]);
-					p.ellipse(p.mouseX, yPos, 20, 20);
+					p.ellipse(p.mouseX, yPos, LConstants.GRAPH_CIRCLE_DIAMETER, LConstants.GRAPH_CIRCLE_DIAMETER);
 				}
 			}
+		}
+		
+		public boolean displayHighlightInfo() {
+			int displayIndex = getDisplayIndex();
+			if (displayIndex != -1) {
+				p.fill(255, 150);
+				p.rect(p.mouseX + 10, p.mouseY + 10, 200, 55);
+				String iName = xName == null ? "x" : xName;
+				String dName = yNames == null ? "y" : yNames[displayIndex];
+				p.fill(0);
+				DataPoint pt = dataList.get(displayIndex).get(getGraphX(p.mouseX));
+				p.textFont(textFont);
+				p.text(String.format("%s: %.4f\n%s: %.4f", iName, pt.getX(), dName, pt.getY()), p.mouseX + 15, p.mouseY + 30);
+			}
+			return displayIndex != -1;
+		}
+		
+		private int getDisplayIndex() {
+			int resIndex = -1;
+			modifySelectIndex();
+			for (int i = 0; resIndex == -1 && i < dataList.size(); i++) {
+				int testIndex = (i + selectIndex) % dataList.size();
+				float yPos = getYFromMouse(testIndex);
+				float diff = p.abs(yPos - p.mouseY);
+				if (diff < LConstants.GRAPH_CIRCLE_DIAMETER / 2) {
+					resIndex = testIndex;
+				}
+			}
+			return resIndex;
+		}
+		
+		private float getYFromMouse(int index) {
+			int pointX = getGraphX(p.mouseX);
+			float yPos = getDisplayY(dataList.get(index).get(pointX).getY());
+			return yPos;
+		}
+		
+		private boolean modifySelectIndex() {
+			boolean indChange = false;
+			if (p.keyPressed && p.key == ' ' && !prevSpace) {
+				prevSpace = true;
+				selectIndex = (selectIndex + 1) % dataList.size();
+				indChange = true;
+			}
+			else if (!p.keyPressed) {
+				prevSpace = false;
+			}
+			return indChange;
 		}
 	}

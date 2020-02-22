@@ -1,29 +1,29 @@
 public class DataPoint {
-	private double xVal, yVal;
+	private float xVal, yVal;
 	
-	public DataPoint(double xVal, double yVal) {
+	public DataPoint(float xVal, float yVal) {
 		this.xVal = xVal;
 		this.yVal = yVal;
 	}
 	
-	public void setPoint(double xVal, double yVal) {
+	public void setPoint(float xVal, float yVal) {
 		this.xVal = xVal;
 		this.yVal = yVal;
 	}
 	
-	public void setX(double xVal) {
+	public void setX(float xVal) {
 		this.xVal = xVal;
 	}
 	
-	public void setY(double yVal) {
+	public void setY(float yVal) {
 		this.yVal = yVal;
 	}
 	
-	public double getX() {
+	public float getX() {
 		return xVal;
 	}
 	
-	public double getY() {
+	public float getY() {
 		return yVal;
 	}
 	

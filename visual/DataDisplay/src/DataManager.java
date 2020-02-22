@@ -12,7 +12,7 @@ public class DataManager {
 	private String fileName;
 	private String delimiter;
 	private ArrayList<String> names;
-	private ArrayList<double[]> data;
+	private ArrayList<float[]> data;
 	
 	public DataManager(String fileName) {
 		this.fileName = fileName;
@@ -39,20 +39,20 @@ public class DataManager {
 			}
 		}
 		int elems = names.size();
-		data.add(new double[elems]);
+		data.add(new float[elems]);
 		data.get(0)[0] = 0;
 		Scanner tmp = new Scanner(s.nextLine()).useDelimiter(Pattern.compile(delimiter));
 		int index = 1;
 		while (index < elems) {
-			data.get(0)[index] = tmp.nextDouble();
+			data.get(0)[index] = tmp.nextFloat();
 			index++;
 		}
 		while(s.hasNextLine()) {
 			tmp = new Scanner(s.nextLine()).useDelimiter(Pattern.compile(delimiter));
-			data.add(new double[elems]);
+			data.add(new float[elems]);
 			index = 0;
 			while (index < elems) {
-				data.get(data.size() - 1)[index] = tmp.nextDouble();
+				data.get(data.size() - 1)[index] = tmp.nextFloat();
 				index++;
 			}
 		}
@@ -74,7 +74,7 @@ public class DataManager {
 		for (int i = 0; i < n2.size(); i++) {
 			ArrayList<DataPoint> nextData = new ArrayList<>();
 			for (int j = 0; j < data.size(); j++) {
-				double[] tmp = data.get(j);
+				float[] tmp = data.get(j);
 				nextData.add(new DataPoint(tmp[index1], tmp[depIndexes.get(i)]));
 			}
 			res.add(nextData);
@@ -82,10 +82,10 @@ public class DataManager {
 		return res;
 	}
 	
-	private ArrayList<Integer> getDependentIndexes(ArrayList<String> names) {
+	private ArrayList<Integer> getDependentIndexes(ArrayList<String> subNames) {
 		ArrayList<Integer> depIndexes = new ArrayList<>();
-		for (int i = 0; i < names.size(); i++) {
-			int tempIndex = names.indexOf(names.get(i));
+		for (int i = 0; i < subNames.size(); i++) {
+			int tempIndex = subNames.indexOf(names.get(i));
 			if (tempIndex != -1) {
 				depIndexes.add(tempIndex);
 			} else {
@@ -97,13 +97,13 @@ public class DataManager {
 		return depIndexes;
 	}
 	
-	public ArrayList<Double> getData(String name) {
+	public ArrayList<Float> getData(String name) {
 		int index = names.indexOf(name);
 		if (index == -1) {
 			System.out.println(name + " did not recall any data");
 			return null;
 		}
-		ArrayList<Double> res = new ArrayList<>(data.size());
+		ArrayList<Float> res = new ArrayList<>(data.size());
 		for (int i = 0; i < data.size(); i++) {
 			res.add(data.get(i)[index]);
 		}
