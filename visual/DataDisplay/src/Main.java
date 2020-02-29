@@ -7,7 +7,7 @@ public class Main {
 				new ProcessingSketch(new String[] {"t", "lap", "pos_x", "pos_y", "x", "v"});
 		pWindows.run();
 		
-		while (!pWindows.graphInitialized()) {
+		while (!pWindows.graphDone()) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -15,7 +15,7 @@ public class Main {
 			}
 		}
 		
-		SwingGui swingGui = new SwingGui(pWindows);
-		swingGui.show();
+//		SwingGui swingGui = new SwingGui(pWindows, pWindows.getAllArgs());
+//		swingGui.show();
 	}
 }

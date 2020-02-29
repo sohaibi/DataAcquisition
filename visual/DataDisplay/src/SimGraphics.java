@@ -34,11 +34,44 @@ public class SimGraphics {
 		}
 	}
 	
+	public int getIndex() {
+		return currentIndex;
+	}
+	
+	public boolean graphDone() {
+		return currGraph.get(currentIndex).graphDone();
+	}
+	
 	public void updateGraph() {
 		currGraph.get(currentIndex).update();
 	}
 	
 	public void display() {
 		currGraph.get(currentIndex).display();
+	}
+	
+	public void updateX(String x) {
+		String[] currY = currGraph.get(currentIndex).getYNames();
+		updateData(x, currY);
+		currGraph.set(currentIndex, new Graph(p, daddyData.getData(x, getArgsList(currY))));
+		currGraph.get(currentIndex).setXName(x);
+		currGraph.get(currentIndex).setYNames(daddyData.getDisplayedNames());
+		currGraph.get(currentIndex).update();
+	}
+	
+	public void updateY(String[] yArgs) {
+		String currX = currGraph.get(currentIndex).getXName();
+		updateData(currX, yArgs);
+	}
+	
+	public void updateData(String x, String[] yArgs) {
+		currGraph.set(currentIndex, new Graph(p, daddyData.getData(x, getArgsList(yArgs))));
+		currGraph.get(currentIndex).setXName(x);
+		currGraph.get(currentIndex).setYNames(daddyData.getDisplayedNames());
+		currGraph.get(currentIndex).update();
+	}
+	
+	public String[] getAllArgs() {
+		return daddyData.getAllArgs();
 	}
 }

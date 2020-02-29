@@ -120,4 +120,12 @@ public class DataManager {
 		}
 		return res;
 	}
+	
+	public String[] getAllArgs() {
+		String[] res = new String[names.size()];
+		for (int i = 0; i < res.length; i++) {
+			res[i] = names.get(i);
+		}
+		return res;
+	}
 }

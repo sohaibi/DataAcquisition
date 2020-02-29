@@ -4,7 +4,7 @@ public class ProcessingSketch extends PApplet {
 	
 	public SimGraphics simGraph;
 	private String[] args;
-
+	
 	public ProcessingSketch(String[] args) {
 		this.args = args;
 	}
@@ -19,17 +19,31 @@ public class ProcessingSketch extends PApplet {
 	}
 	
 	public void draw() {
-		this.background(240);
+		this.background(100);
 		simGraph.display();
 	}
 	
 	public void setGraph(int index) {
-		simGraph.setIndex(index);
-		simGraph.updateGraph();
+		if (index != simGraph.getIndex()) {
+			simGraph.setIndex(index);
+			simGraph.updateGraph();
+		}
 	}
 	
-	public boolean graphInitialized() {
-		return simGraph != null;
+	public boolean graphDone() {
+		return simGraph != null && simGraph.graphDone();
+	}
+	
+	public String[] getAllArgs() {
+		return simGraph.getAllArgs();
+	}
+	
+	public void updateX(String x) {
+		simGraph.updateX(x);
+	}
+	
+	public void updateY(String[] yArgs) {
+		simGraph.updateY(yArgs);
 	}
 	
 	public void run() {

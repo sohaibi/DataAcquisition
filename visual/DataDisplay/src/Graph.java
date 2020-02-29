@@ -17,6 +17,7 @@ public class Graph {
 	private String[] yNames;
 	private PFont textFont;
 	private boolean noData;
+	private boolean graphDone;
 
 	public Graph(PApplet p) {
 		this.p = p;
@@ -40,15 +41,26 @@ public class Graph {
 			this.yNames[i] = yNames[i];
 		}
 	}
+	
+	public String getXName() {
+		return xName;
+	}
+	
+	public String[] getYNames() {
+		return yNames;
+	}
 
 	public void update() {
-		displayBackground();
-		deltaX = (float) LConstants.GRAPH_DATA_WIDTH / dataList.get(0).size();
-		extrema = findExtrema();
-		displayVar();
-		createGraphImage();
-		p.fill(255);
-		p.text("NO DATA SELECTED", LConstants.GRAPH_FINAL_DATA_X / 2, LConstants.GRAPH_FINAL_DATA_Y / 2);
+		if (imgGraph == null) {
+			displayBackground();
+			if (!noData) {
+				deltaX = (float) LConstants.GRAPH_DATA_WIDTH / dataList.get(0).size();
+				extrema = findExtrema();
+				displayVar();
+			}
+			createGraphImage();
+			graphDone = true;
+		}
 	}
 
 	public void displayVar() {
@@ -128,8 +140,12 @@ public class Graph {
 	}
 
 	public void display() {
-		p.image(imgGraph, LConstants.GRAPH_INITIAL_X, LConstants.GRAPH_INITIAL_Y);
-		displayMouse();
+		if (imgGraph != null) {
+			p.image(imgGraph, LConstants.GRAPH_INITIAL_X, LConstants.GRAPH_INITIAL_Y);
+		}
+		if (!noData) { 
+			displayMouse();
+		}
 	}
 
 	private void displayMouse() {
@@ -205,6 +221,10 @@ public class Graph {
 			}
 		}
 		return resIndex;
+	}
+	
+	public boolean graphDone() {
+		return graphDone;
 	}
 
 	private float getYFromMouse(int index) {
