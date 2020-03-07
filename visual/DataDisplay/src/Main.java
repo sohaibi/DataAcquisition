@@ -15,7 +15,7 @@ public class Main {
 			}
 		}
 		
-//		SwingGui swingGui = new SwingGui(pWindows, pWindows.getAllArgs());
-//		swingGui.show();
+		SwingGui swingGui = new SwingGui(pWindows, pWindows.getAllArgs());
+		swingGui.show();
 	}
 }

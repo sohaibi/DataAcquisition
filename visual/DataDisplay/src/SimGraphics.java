@@ -71,7 +71,23 @@ public class SimGraphics {
 		currGraph.get(currentIndex).update();
 	}
 	
+	public String[] getCurrentArgs() {
+		return currGraph.get(currentIndex).getYNames();
+	}
+	
 	public String[] getAllArgs() {
 		return daddyData.getAllArgs();
+	}
+	
+	public void updateColor(String colorArg, int color) {
+		currGraph.get(currentIndex).updateColor(colorArg, color);
+	}
+	
+	public DataPoint getExtrema() {
+		return currGraph.get(currentIndex).getExtrema();
+	}
+	
+	public void setRange(float min, float max) {
+		currGraph.get(currentIndex).setCustomRange(min, max);
 	}
 }

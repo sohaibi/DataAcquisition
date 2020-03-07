@@ -34,6 +34,10 @@ public class ProcessingSketch extends PApplet {
 		return simGraph != null && simGraph.graphDone();
 	}
 	
+	public String[] getCurrArgs() {
+		return simGraph.getCurrentArgs();
+	}
+	
 	public String[] getAllArgs() {
 		return simGraph.getAllArgs();
 	}
@@ -44,6 +48,18 @@ public class ProcessingSketch extends PApplet {
 	
 	public void updateY(String[] yArgs) {
 		simGraph.updateY(yArgs);
+	}
+	
+	public void updateColor(String colorArg, int color) {
+		simGraph.updateColor(colorArg, color);
+	}
+	
+	public DataPoint getRange() {
+		return simGraph.getExtrema();
+	}
+	
+	public void setRange(float min, float max) {
+		simGraph.setRange(min, max);
 	}
 	
 	public void run() {

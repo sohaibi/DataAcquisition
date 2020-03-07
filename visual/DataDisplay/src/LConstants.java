@@ -28,8 +28,6 @@ public final class LConstants {
 	public final static int GRAPH_BACKGROUND_COLOR = 0;
 	public final static int GRAPH_GRID_LINE_COLOR = 255;
 	public final static int GRAPH_MOUSE_LINE_COLOR = 180;
-	public final static int[] GRAPH_DATA_LINE_COLOR = {0xFF7293CB, 0xFFE1974C, 0xFF84BA5B, 0xFFD35E60, 
-			0xFF808585, 0xFF9067A7, 0xAB6857, 0xCCC210};
 	public final static int GRAPH_CIRCLE_DIAMETER = 20;
 	public final static int GRAPH_GRID_AMOUNT = 5;
 	

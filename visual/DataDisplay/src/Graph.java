@@ -10,7 +10,9 @@ public class Graph {
 	private int highlightIndex;
 	private boolean prevSpace;
 	private ArrayList<ArrayList<DataPoint>> dataList;
+	private ArrayList<Integer> lineColors;
 	private DataPoint extrema;
+	private DataPoint customExtrema;
 	private float deltaX;
 	private PImage imgGraph;
 	private String xName;
@@ -28,6 +30,10 @@ public class Graph {
 		this.p = p;
 		dataList = data;
 		textFont = p.createFont(LConstants.GRAPH_TEXT_FONT, LConstants.GRAPH_TEXT_SIZE);
+		lineColors = new ArrayList<>();
+		for (int i = 0; i < data.size(); i++) {
+			lineColors.add(255);
+		}
 		noData = false;
 	}
 
@@ -51,16 +57,14 @@ public class Graph {
 	}
 
 	public void update() {
-		if (imgGraph == null) {
-			displayBackground();
-			if (!noData) {
-				deltaX = (float) LConstants.GRAPH_DATA_WIDTH / dataList.get(0).size();
-				extrema = findExtrema();
-				displayVar();
-			}
-			createGraphImage();
-			graphDone = true;
+		displayBackground();
+		if (!noData) {
+			deltaX = (float) LConstants.GRAPH_DATA_WIDTH / dataList.get(0).size();
+			extrema = customExtrema == null ? getExtrema() : customExtrema;
+			displayVar();
 		}
+		createGraphImage();
+		graphDone = true;
 	}
 
 	public void displayVar() {
@@ -68,7 +72,7 @@ public class Graph {
 		displayGrid();
 		displayAxisInfo();
 		for (ArrayList<DataPoint> dataVar : dataList) {
-			p.stroke(LConstants.GRAPH_DATA_LINE_COLOR[colorNum]);
+			p.stroke(lineColors.get(colorNum));
 			DataPoint prev = dataVar.get(0);
 			DataPoint curr;
 			for (int i = 1; i < dataVar.size(); i++) {
@@ -122,7 +126,7 @@ public class Graph {
 		imgGraph.updatePixels();
 	}
 
-	public DataPoint findExtrema() {
+	public DataPoint getExtrema() {
 		float min = Float.MAX_VALUE;
 		float max = Float.MIN_VALUE;
 		for (ArrayList<DataPoint> dataVar : dataList) {
@@ -137,6 +141,20 @@ public class Graph {
 			}
 		}
 		return new DataPoint(min, max);
+	}
+	
+	public boolean updateColor(String lineArg, int color) {
+		int index = -1;
+		for (int i = 0; index == -1 && i < yNames.length; i++) {
+			if (yNames[i].equals(lineArg)) {
+				index = i;
+			}
+		}
+		if (index != -1) {
+			lineColors.set(index, color);
+			update();
+		}
+		return index != -1;
 	}
 
 	public void display() {
@@ -155,7 +173,7 @@ public class Graph {
 			p.line(p.mouseX, LConstants.GRAPH_INITIAL_DATA_Y, p.mouseX, LConstants.GRAPH_FINAL_DATA_Y);
 			for (int i = 0; i < dataList.size(); i++) {
 				float yPos = getYFromMouse(i);
-				p.fill(LConstants.GRAPH_DATA_LINE_COLOR[i]);
+				p.fill(lineColors.get(i));
 				p.ellipse(p.mouseX, yPos, LConstants.GRAPH_CIRCLE_DIAMETER, LConstants.GRAPH_CIRCLE_DIAMETER);
 			}
 		}
@@ -243,5 +261,22 @@ public class Graph {
 			prevSpace = false;
 		}
 		return indChange;
+	}
+	
+	public void setCustomRange(float min, float max) {
+		if (extrema != null && extrema.getX() == min && extrema.getY() == max) {
+			return;
+		}
+		else if (min == 0 && max == 0) {
+			customExtrema = null;
+		} 
+		else {
+			customExtrema = new DataPoint(min, max);
+		}
+		update();
+	}
+	
+	public DataPoint getRange() {
+		return extrema;
 	}
 }
