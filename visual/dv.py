@@ -9,6 +9,7 @@ data_3 = True
 data_4 = True
 data_5 = True
 
+
 # Add traces
 if data_1 == True:
     figure.add_trace(go.Scatter(x=[0, 2, 4, 6], y=[0, 1, 2, 3], mode='lines+markers', name='data_1'))
