@@ -1,52 +1,48 @@
 import pandas
 
+data = pandas.read_csv('results.csv')
 
 
 #selects rows over a range of values specified by lower_bound and upper_bound
-def range_of_values(lower_bound, upper_bound, column_name):
-    data = pandas.read_csv('results.csv')
-    datatest = data.loc[(data[column_name] >= lower_bound) & (data[column_name] <= upper_bound)]
-    return datatest
+def get_range(lower_bound, upper_bound, column_name):
+    return (data.loc[(data[column_name] >= lower_bound) & 
+            (data[column_name] <= upper_bound)])
+
+
 #selects row over a range of values specified by value
-def matching_values(value, column_name):
-    data = pandas.read_csv('results.csv')
-    datatest = data.loc[(data[column_name] == value)]
-    print(datatest)
-    return datatest
+def get_values(value, column_name):
+    return data.loc[(data[column_name] == value)]
+
+
 #returns the average values from a column
-def return_avg(column_name):
-    data = pandas.read_csv('results.csv')
-    datatest = data[column_name].mean()
-    print(datatest)
-    return datatest
+def get_avg(column_name):
+    return data[column_name].mean()
+
+
 #returns all the values in the column
-def search_by_column(column_name):
-    data = pandas.read_csv('results.csv')
-    datatest = data[column_name]
-    print datatest
-    return datatest
+def get_var(column_name):
+    return data[column_name]
+
+
 #returns maximum value in the column
-def return_max(column_name):
-    data = pandas.read_csv('results.csv')
-    datatest = data[column_name].max()
-    print(datatest)
-    return datatest
+def get_max(column_name):
+    return data[column_name].max()
+
+
 #returns standard deviation of values in the column
-def return_std(column_name):
-    data = pandas.read_csv('results.csv')
-    datatest = data[column_name].std()
-    print(datatest)
-    return datatest
+def get_std(column_name):
+    return data[column_name].std()
+
+
 #returns description of the values in the column
 def return_desc(column_name):
-    data = pandas.read_csv('results.csv')
-    datatest = data[column_name].describe()
-    print(datatest)
-    return datatest
+    return data[column_name].describe()
 
 
 if __name__ == '__main__':
-    search_by_column("t")
+    get_var("t")
+
+
 '''
 def data_parse(lower_bound, int upper_bound, column_name, int )
 data = pandas.read_csv('results.csv')
@@ -67,6 +63,3 @@ if (datatype == "column" or datatype == "columns" or datatype == "Column" or dat
     q3 = raw_input("Sort By?(")
 
 '''
-
-
-#print(datatest)
