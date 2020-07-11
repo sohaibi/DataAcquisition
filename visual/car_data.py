@@ -73,6 +73,14 @@ def get_std(column_name):
 def return_desc(column_name):
     return data[column_name].describe()
 
+#gets a single return value given a column name and value
+def get_single_value(search_col_name, value, res_col_name):
+    selected = data.loc[(data[search_col_name] == value)]
+    i = 0
+    while res_col_name != titles[i]:
+        i = i + 1
+    value = selected.iloc[:, i]
+    return(selected)
 
 if __name__ == '__main__':
     get_var("t")
