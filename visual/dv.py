@@ -1,14 +1,13 @@
 import plotly.graph_objects as go
 import car_data
 
-figure = go.Figure()
 
 #Graph data
 data_sets = {
-'lap':True,
-'pos_x' : True,
-'pos_y' : True,
-'x' : True,
+'lap' : False,
+'pos_x' : False,
+'pos_y' : False,
+'x' : False,
 'v' : False,
 'a_long' : False,
 'a_lat' : False,
@@ -88,17 +87,36 @@ data_sets = {
 }
 
 #Displays every graph
-''' 
-for itm in data_sets:
-    data_sets[itm] = True
-data_sets["rotor_heat_f"] = False
-data_sets["rotor_heat_r"] = False
-data_sets["rotor_temp_f"] = False
-data_sets["rotor_temp_r"] = False
-'''
+def hideGraphs():
+    for itm in data_sets:
+        data_sets[itm] = False
+
 
 #Data points every x seconds
 listDelayValue = 0.5
+class Graph:
+    def __init__(self, x, data):
+        self.x_axis = x
+        self.y_axis = data
+        for item in self.y_axis:
+            data_sets[item] = True
+
+    def display(self):
+        figure = go.Figure()
+        for key in data_sets:
+            if data_sets[key]:
+                figure.add_trace(go.Scatter(x=get_list(self.x_axis), y=get_list(key), mode='lines+markers', name=key))
+
+        figure.show()
+        
+def main():
+    Graph1 = Graph('t', ['pos_x','pos_y'])
+    Graph1.display()
+    print(data_sets['pos_x'])
+    hideGraphs()
+    print(data_sets['pos_x'])
+    Graph2 = Graph('t', ['v','pos_y', 'a_long'])
+    Graph2.display()
 
 #Function to transfer data into array
 def get_list(column_name):
@@ -111,10 +129,15 @@ def get_list(column_name):
             listDelay = 0
         listDelay += 1
     return data
-
+if __name__ == '__main__':
+    main()
+'''
 # Add traces
-for key in data_sets:
-    if data_sets[key]:
-        figure.add_trace(go.Scatter(x=get_list("t"), y=get_list(key), mode='lines+markers', name=key))
+def display():
+    figure = go.Figure()
+    for key in data_sets:
+        if data_sets[key]:
+            figure.add_trace(go.Scatter(x=get_list("t"), y=get_list(key), mode='lines+markers', name=key))
 
-figure.show()
+    figure.show()
+'''
