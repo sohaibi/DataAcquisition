@@ -87,15 +87,26 @@ data_sets = {
 'v_mph' : False,
 }
 
-listDelayValue = 100
+#Displays every graph
+''' 
+for itm in data_sets:
+    data_sets[itm] = True
+data_sets["rotor_heat_f"] = False
+data_sets["rotor_heat_r"] = False
+data_sets["rotor_temp_f"] = False
+data_sets["rotor_temp_r"] = False
+'''
+
+#Data points every x seconds
+listDelayValue = 0.5
 
 #Function to transfer data into array
 def get_list(column_name):
     ax = (car_data.get_var(column_name))
     data = []
-    listDelay = listDelayValue
+    listDelay = listDelayValue * 100
     for itm in ax:
-        if listDelay == listDelayValue:
+        if listDelay == (listDelayValue * 100):
             data.append(itm)
             listDelay = 0
         listDelay += 1
