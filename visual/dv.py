@@ -3,6 +3,7 @@ import car_data
 
 
 #Graph data
+'''
 data_sets = {
 'lap' : False,
 'pos_x' : False,
@@ -85,36 +86,39 @@ data_sets = {
 'sideforce' : False,
 'v_mph' : False,
 }
-
 #Displays every graph
 def hideGraphs():
     for itm in data_sets:
         data_sets[itm] = False
-
+'''
 
 #Data points every x seconds
 listDelayValue = 0.5
 class Graph:
-    def __init__(self, x, data):
+    def __init__(self, x = None, data = None):
         self.x_axis = x
         self.y_axis = data
+        self.titles = car_data.titles
+        '''
         for item in self.y_axis:
-            data_sets[item] = True
+            if item in data_sets:
+                data_sets[item] = True
+                '''
 
     def display(self):
         figure = go.Figure()
-        for key in data_sets:
-            if data_sets[key]:
-                figure.add_trace(go.Scatter(x=get_list(self.x_axis), y=get_list(key), mode='lines+markers', name=key))
+        for key in self.y_axis:
+            #if data_sets[key]:
+            figure.add_trace(go.Scatter(x=get_list(self.x_axis), y=get_list(key), mode='lines+markers', name=key))
 
         figure.show()
         
 def main():
     Graph1 = Graph('t', ['pos_x','pos_y'])
     Graph1.display()
-    print(data_sets['pos_x'])
-    hideGraphs()
-    print(data_sets['pos_x'])
+    #print(data_sets['pos_x'])
+    #hideGraphs()
+    #print(data_sets['pos_x'])
     Graph2 = Graph('t', ['v','pos_y', 'a_long'])
     Graph2.display()
 

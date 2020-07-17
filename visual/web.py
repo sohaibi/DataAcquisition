@@ -35,8 +35,19 @@ def update_dabs(n_clicks):
             [Input('graph-tabs', 'value')])
 def render_content(tab):
     tab_num = int(tab[4])
-    return html.Div([
-        html.H3(graph_list[tab_num].page_name)
-    ])
+    if tab_num == 0:
+        return html.Div([
+            html.H3(graph_list[tab_num].page_name)
+        ])
+    else:
+        cur_graph = graph_list[tab_num]
+        options = []
+        for var in cur_graph.var_list:
+            options.append({'label': var, 'value': var})
+        drop_list = []
+        drop_list.append(dcc.Dropdown(options=options))
+        drop_list.append(dcc.Dropdown(options=options, multi=True))
+        return drop_list
+
 
 app.run_server(debug=True)
