@@ -6,7 +6,7 @@ import json
 #function returns a dictionary where the keys relate to weather attributes
 #keys: chances, status, visibility, UV_index, pressure, humidity, wind, now, sun_rise, and temp
 
-
+#makes connection to website for weather data
 weather = {}
 url = 'https://weather.com/weather/today/l/a9e8362791a8366662d2f306c08fc5496d43c98ec529f1044339f09454cc23a9'
 req = Request(url ,headers={'User-Agent': 'Mozilla/5.0'})
@@ -16,10 +16,10 @@ soup = BeautifulSoup(page, 'html.parser')
 
 # Loads data from Json file to request properly
 def load_data():
-    with open("req_data.json") as f:
+    with open("req_data.json") as f:  #opens json file template
         json_data = json.load(f)
     for tag in json_data["tags"]:
-        html_tag = tag["html_tag"]
+        html_tag = tag["html_tag"]     #iterates through and selects all data to be parsed
         for attr in tag["attr_tags"]:
             for attr_data in tag["attr_tags"][attr]:
                 class_data = tag["attr_tags"][attr][attr_data] 
@@ -31,6 +31,8 @@ def load_data():
 name (name) = soup.find("span" (type), attrs={'class' (classification): "_-_-components-src-atom-WeatherData-Wind-Wind--windWrapper--3Ly7c undefined" (classname)})
 weather['wind'] = wind
 '''
+
+#finds data based on inputted tag and returns relevant weather results or a message saying that the weather data could not be found
 def return_data(name, tag_type, classification, classname):
     data = soup.find(tag_type, attrs={classification: classname})
     if data is not None:
