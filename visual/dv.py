@@ -92,8 +92,10 @@ def hideGraphs():
         data_sets[itm] = False
 '''
 
-#Data points every x seconds
-listDelayValue = 0.5
+#Data points every x unit (depends on x-axis variable)
+#i.e, for time variable: x / 100 = every x seconds
+listDelayValue = 50
+
 class Graph:
     def __init__(self, x = None, data = None):
         self.x_axis = x
@@ -111,7 +113,7 @@ class Graph:
             #if data_sets[key]:
             figure.add_trace(go.Scatter(x=get_list(self.x_axis), y=get_list(key), mode='lines+markers', name=key))
 
-        figure.show()
+        return figure
         
 def main():
     Graph1 = Graph('t', ['pos_x','pos_y'])
@@ -126,22 +128,12 @@ def main():
 def get_list(column_name):
     ax = (car_data.get_var(column_name))
     data = []
-    listDelay = listDelayValue * 100
+    listDelay = listDelayValue 
     for itm in ax:
-        if listDelay == (listDelayValue * 100):
+        if listDelay == listDelayValue:
             data.append(itm)
             listDelay = 0
         listDelay += 1
     return data
 if __name__ == '__main__':
     main()
-'''
-# Add traces
-def display():
-    figure = go.Figure()
-    for key in data_sets:
-        if data_sets[key]:
-            figure.add_trace(go.Scatter(x=get_list("t"), y=get_list(key), mode='lines+markers', name=key))
-
-    figure.show()
-'''

@@ -10,7 +10,7 @@ def get_range(lower_bound, upper_bound, column_name):
     my_dict={}
     selected = data.loc[(data[column_name] >= lower_bound) &
                      (data[column_name] <= upper_bound)]
-    print(selected)
+    #print(selected)
     iindex = 0;
     titleindex = 0;
     for iindex in range(81):
@@ -21,7 +21,7 @@ def get_range(lower_bound, upper_bound, column_name):
         iindex = iindex + 1
         titleindex = titleindex + 1
         my_dict[current_title] = selected
-    print(my_dict)
+    #print(my_dict)
     return(my_dict)
 
 
@@ -38,7 +38,7 @@ def get_values(value, column_name):
         iindex = iindex + 1
         titleindex = titleindex + 1
         my_dict[current_title] = selected
-    print(my_dict)
+    #print(my_dict)
     return(my_dict)
 
 
@@ -54,7 +54,7 @@ def get_var(column_name):
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
             table.append(row[column_name])
-        print(table)
+        #print(table)
         #print(data[column_name])
     return table
 
